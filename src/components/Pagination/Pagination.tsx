@@ -26,7 +26,12 @@ export const Pagination: React.FC<Props> = ({
     return pages;
   }
 
-  const pages = arrayNumOfPages(numOfPages);
+  const pages = Array.from(
+    { length: Math.ceil(total / perPage) },
+    (_, i) => i + 1,
+  );
+
+  const totalPages = Math.ceil(total / perPage);
 
   return (
     <ul className="pagination">
@@ -46,7 +51,9 @@ export const Pagination: React.FC<Props> = ({
               onPageChange(currentPage - 1);
             }
           }}
-        ></a>
+        >
+          «
+        </a>
       </li>
 
       {pages.map(page => {
@@ -74,7 +81,7 @@ export const Pagination: React.FC<Props> = ({
       })}
       <li
         className={classNames('page-item', {
-          disabled: currentPage === pages[pages.length - 1],
+          disabled: currentPage >= totalPages,
         })}
       >
         <a
@@ -88,7 +95,9 @@ export const Pagination: React.FC<Props> = ({
               onPageChange(currentPage + 1);
             }
           }}
-        ></a>
+        >
+          »
+        </a>
       </li>
     </ul>
   );
